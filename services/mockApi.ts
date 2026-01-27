@@ -142,12 +142,18 @@ export const updateStudent = async (userData: User): Promise<User> => {
     await delay(300);
     const index = users.findIndex(u => u.id === userData.id);
     if (index !== -1) {
+        const existingUser = users[index];
+        
+        // Merge existing data with new data to prevent accidental loss of plans
+        const updatedUser = { ...existingUser, ...userData };
+
         // preserve password if not provided in the update form
         if (!userData.password) {
-            userData.password = users[index].password;
+            updatedUser.password = existingUser.password;
         }
-        users[index] = { ...userData };
-        return { ...users[index] };
+        
+        users[index] = updatedUser;
+        return { ...updatedUser };
     }
     throw new Error('User not found');
 };
