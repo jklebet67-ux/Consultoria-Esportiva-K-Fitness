@@ -1,6 +1,7 @@
 
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { Dumbbell } from 'lucide-react';
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -30,7 +31,8 @@ const LoginPage: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full max-w-md p-8 space-y-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
         <div className="text-center">
-            <div className="flex justify-center items-center mb-4">
+            <div className="flex justify-center items-center mb-4 space-x-3">
+                <Dumbbell className="h-10 w-10 text-pink-500" />
                 <span className="text-4xl font-bold text-gray-800 dark:text-white">K-Fitness</span>
             </div>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Consultoria Esportiva</p>
@@ -47,7 +49,7 @@ const LoginPage: React.FC = () => {
                 type="text"
                 autoComplete="username"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-gray-700 rounded-t-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-gray-700 rounded-t-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
                 placeholder="Usuário"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -63,7 +65,7 @@ const LoginPage: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-gray-700 rounded-b-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-gray-700 rounded-b-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
                 placeholder="Senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -77,7 +79,7 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:bg-sky-400"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:bg-pink-400"
             >
               {loading ? 'Entrando...' : 'Entrar'}
             </button>

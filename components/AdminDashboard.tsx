@@ -48,16 +48,16 @@ const AdminDashboard: React.FC = () => {
                 <div className="px-4 py-6 sm:px-0">
                     <div className="flex justify-between items-center mb-6">
                         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Painel do Administrador</h1>
-                        <button onClick={() => openModal()} className="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700">Adicionar Aluno</button>
+                        <button onClick={() => openModal()} className="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700">Adicionar Aluno</button>
                     </div>
                     <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                             {students.map(student => (
                                 <li key={student.id} className="px-4 py-4 sm:px-6 hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <div className="flex items-center justify-between">
-                                        <div className="text-sm font-medium text-sky-600 truncate">{student.fullName}</div>
+                                        <div className="text-sm font-medium text-pink-600 truncate">{student.fullName}</div>
                                         <div className="ml-2 flex-shrink-0 flex">
-                                            <button onClick={() => openModal(student)} className="px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">Editar</button>
+                                            <button onClick={() => openModal(student)} className="px-3 py-1 text-sm text-white bg-pink-500 rounded-md hover:bg-pink-600">Editar</button>
                                             <button onClick={() => handleDelete(student.id)} className="ml-2 px-3 py-1 text-sm text-white bg-red-500 rounded-md hover:bg-red-600">Apagar</button>
                                         </div>
                                     </div>
@@ -166,7 +166,7 @@ const StudentFormModal: React.FC<{ student: User | null, onSave: (student: User)
                     </div>
                     <div className="bg-gray-100 dark:bg-gray-700 p-4 flex justify-end space-x-2">
                         <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Cancelar</button>
-                        <button type="submit" className="px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700">Salvar</button>
+                        <button type="submit" className="px-4 py-2 bg-pink-600 text-white rounded hover:bg-pink-700">Salvar</button>
                     </div>
                 </form>
             </div>

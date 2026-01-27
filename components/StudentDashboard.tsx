@@ -49,7 +49,7 @@ const StudentDashboard: React.FC = () => {
                             <select
                                 id="tabs"
                                 name="tabs"
-                                className="block w-full focus:ring-sky-500 focus:border-sky-500 border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600"
+                                className="block w-full focus:ring-pink-500 focus:border-pink-500 border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600"
                                 value={activeTab}
                                 onChange={(e) => setActiveTab(e.target.value as WeekDay)}
                             >
@@ -65,7 +65,7 @@ const StudentDashboard: React.FC = () => {
                                             onClick={() => setActiveTab(day)}
                                             className={`${
                                                 activeTab === day
-                                                ? 'border-sky-500 text-sky-600'
+                                                ? 'border-pink-500 text-pink-600'
                                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:border-gray-500'
                                             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
                                         >
@@ -89,19 +89,19 @@ const StudentDashboard: React.FC = () => {
                             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Dieta do Dia</h2>
                             <div className="space-y-4">
                                 <div>
-                                    <h3 className="font-semibold text-sky-600">Café da Manhã</h3>
+                                    <h3 className="font-semibold text-pink-600">Café da Manhã</h3>
                                     <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{currentUser.dietPlan[activeTab].breakfast}</p>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sky-600">Almoço</h3>
+                                    <h3 className="font-semibold text-pink-600">Almoço</h3>
                                     <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{currentUser.dietPlan[activeTab].lunch}</p>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sky-600">Lanche da Tarde</h3>
+                                    <h3 className="font-semibold text-pink-600">Lanche da Tarde</h3>
                                     <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{currentUser.dietPlan[activeTab].snack}</p>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-sky-600">Jantar</h3>
+                                    <h3 className="font-semibold text-pink-600">Jantar</h3>
                                     <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{currentUser.dietPlan[activeTab].dinner}</p>
                                 </div>
                             </div>

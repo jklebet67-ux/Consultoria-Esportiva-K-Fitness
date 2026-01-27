@@ -1,7 +1,9 @@
 
 import { Role, User, DietPlan, WorkoutPlan } from '../types';
 
-let users: User[] = [
+const LOCAL_STORAGE_KEY = 'k-fitness-users';
+
+const initialUsers: User[] = [
     {
         id: 1,
         username: 'admin',
@@ -92,7 +94,30 @@ let users: User[] = [
     },
 ];
 
-let nextId = 4;
+const loadUsersFromStorage = (): User[] => {
+    try {
+        const storedUsers = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (storedUsers) {
+            return JSON.parse(storedUsers);
+        }
+    } catch (error) {
+        console.error("Error loading users from local storage", error);
+    }
+    // If nothing in storage or error, save and return initial users
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(initialUsers));
+    return initialUsers;
+};
+
+let users: User[] = loadUsersFromStorage();
+let nextId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+
+const persistUsers = () => {
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(users));
+    } catch (error) {
+        console.error("Error saving users to local storage", error);
+    }
+};
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
@@ -135,6 +160,7 @@ export const addStudent = async (userData: Omit<User, 'id'|'password'> & {passwo
     await delay(300);
     const newUser: User = { ...userData, id: nextId++ };
     users.push(newUser);
+    persistUsers();
     return { ...newUser };
 };
 
@@ -153,6 +179,7 @@ export const updateStudent = async (userData: User): Promise<User> => {
         }
         
         users[index] = updatedUser;
+        persistUsers();
         return { ...updatedUser };
     }
     throw new Error('User not found');
@@ -161,4 +188,5 @@ export const updateStudent = async (userData: User): Promise<User> => {
 export const deleteStudent = async (userId: number): Promise<void> => {
     await delay(300);
     users = users.filter(u => u.id !== userId);
+    persistUsers();
 };
