@@ -1,5 +1,5 @@
 
-import { Role, User, DietPlan, WorkoutPlan } from '../types';
+import { Role, User, DietPlan, WorkoutPlan, ProgressPhoto } from '../types';
 
 const LOCAL_STORAGE_KEY = 'k-fitness-users';
 
@@ -13,6 +13,7 @@ const initialUsers: User[] = [
         expirationDate: '2099-12-31',
         workoutPlan: {} as WorkoutPlan,
         dietPlan: {} as DietPlan,
+        progressPhotos: [],
     },
     {
         id: 2,
@@ -67,6 +68,7 @@ const initialUsers: User[] = [
                 dinner: 'Frango desfiado com mandioca',
             },
         },
+        progressPhotos: [],
     },
     {
         id: 3,
@@ -91,6 +93,7 @@ const initialUsers: User[] = [
             friday: { breakfast: 'Café', lunch: 'Almoço', snack: 'Lanche', dinner: 'Jantar' },
             saturday: { breakfast: 'Café', lunch: 'Almoço', snack: 'Lanche', dinner: 'Jantar' },
         },
+        progressPhotos: [],
     },
 ];
 
@@ -98,7 +101,15 @@ const loadUsersFromStorage = (): User[] => {
     try {
         const storedUsers = localStorage.getItem(LOCAL_STORAGE_KEY);
         if (storedUsers) {
-            return JSON.parse(storedUsers);
+            const parsedUsers = JSON.parse(storedUsers) as User[];
+            // Retrofit IDs for backward compatibility
+            return parsedUsers.map(user => ({
+                ...user,
+                progressPhotos: user.progressPhotos ? user.progressPhotos.map((p, index) => ({
+                    ...p,
+                    id: p.id || `${user.id}-${new Date(p.date).getTime()}-${index}`
+                })) : [],
+            }));
         }
     } catch (error) {
         console.error("Error loading users from local storage", error);
@@ -153,12 +164,13 @@ export const getNewStudentTemplate = (): User => {
             friday: { breakfast: '', lunch: '', snack: '', dinner: '' },
             saturday: { breakfast: '', lunch: '', snack: '', dinner: '' },
         },
+        progressPhotos: [],
     };
 };
 
 export const addStudent = async (userData: Omit<User, 'id'|'password'> & {password:string}): Promise<User> => {
     await delay(300);
-    const newUser: User = { ...userData, id: nextId++ };
+    const newUser: User = { ...userData, id: nextId++, progressPhotos: [] };
     users.push(newUser);
     persistUsers();
     return { ...newUser };
@@ -170,7 +182,7 @@ export const updateStudent = async (userData: User): Promise<User> => {
     if (index !== -1) {
         const existingUser = users[index];
         
-        // Merge existing data with new data to prevent accidental loss of plans
+        // Merge existing data with new data
         const updatedUser = { ...existingUser, ...userData };
 
         // preserve password if not provided in the update form
@@ -189,4 +201,34 @@ export const deleteStudent = async (userId: number): Promise<void> => {
     await delay(300);
     users = users.filter(u => u.id !== userId);
     persistUsers();
+};
+
+export const addProgressPhoto = async (userId: number, photoData: Omit<ProgressPhoto, 'id'>): Promise<User> => {
+    await delay(300);
+    const index = users.findIndex(u => u.id === userId);
+    if (index !== -1) {
+        if (!users[index].progressPhotos) {
+            users[index].progressPhotos = [];
+        }
+        const newPhoto: ProgressPhoto = {
+            ...photoData,
+            id: Date.now().toString()
+        };
+        users[index].progressPhotos.push(newPhoto);
+        persistUsers();
+        return { ...users[index] };
+    }
+    throw new Error('User not found');
+};
+
+export const deleteProgressPhoto = async (userId: number, photoId: string): Promise<User> => {
+    await delay(300);
+    const userIndex = users.findIndex(u => u.id === userId);
+    if (userIndex !== -1) {
+        const user = users[userIndex];
+        user.progressPhotos = user.progressPhotos.filter(p => p.id !== photoId);
+        persistUsers();
+        return { ...user };
+    }
+    throw new Error('User not found');
 };

@@ -1,6 +1,6 @@
 
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '../types';
+import { User, ProgressPhoto } from '../types';
 import * as api from '../services/mockApi';
 
 interface AuthContextType {
@@ -11,6 +11,8 @@ interface AuthContextType {
   addUser: (user: Omit<User, 'id'>) => Promise<User>;
   updateUser: (user: User) => Promise<User>;
   deleteUser: (userId: number) => Promise<void>;
+  addProgressPhoto: (userId: number, photo: Omit<ProgressPhoto, 'id'>) => Promise<void>;
+  deleteProgressPhoto: (userId: number, photoId: string) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -60,10 +62,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     await api.deleteStudent(userId);
     setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
   };
+  
+  const addProgressPhoto = async (userId: number, photo: Omit<ProgressPhoto, 'id'>): Promise<void> => {
+    const updatedUser = await api.addProgressPhoto(userId, photo);
+    setUsers(prevUsers => prevUsers.map(u => u.id === updatedUser.id ? updatedUser : u));
+    if (currentUser && currentUser.id === updatedUser.id) {
+      setCurrentUser(updatedUser);
+    }
+  };
+
+  const deleteProgressPhoto = async (userId: number, photoId: string): Promise<void> => {
+    const updatedUser = await api.deleteProgressPhoto(userId, photoId);
+     setUsers(prevUsers => prevUsers.map(u => u.id === updatedUser.id ? updatedUser : u));
+    if (currentUser && currentUser.id === updatedUser.id) {
+      setCurrentUser(updatedUser);
+    }
+  };
 
 
   return (
-    <AuthContext.Provider value={{ currentUser, users, login, logout, addUser, updateUser, deleteUser }}>
+    <AuthContext.Provider value={{ currentUser, users, login, logout, addUser, updateUser, deleteUser, addProgressPhoto, deleteProgressPhoto }}>
       {children}
     </AuthContext.Provider>
   );

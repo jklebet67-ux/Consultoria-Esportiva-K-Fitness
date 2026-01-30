@@ -29,6 +29,12 @@ export interface WorkoutPlan {
   saturday: string;
 }
 
+export interface ProgressPhoto {
+  id: string;
+  date: string; // ISO string
+  imageDataUrl: string;
+}
+
 export interface User {
   id: number;
   username: string;
@@ -38,6 +44,7 @@ export interface User {
   expirationDate: string; // YYYY-MM-DD
   workoutPlan: WorkoutPlan;
   dietPlan: DietPlan;
+  progressPhotos: ProgressPhoto[];
 }
 
 export const WEEK_DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
